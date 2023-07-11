@@ -2,18 +2,20 @@ package core
 
 import "encoding/json"
 
-type EditorContentResponse struct {
-	Data struct {
-		Question struct {
+type DownloadProblemResponse struct {
+    Data struct {
+        Question struct {
 			QuestionID          string   `json:"questionId"`
 			ExampleTestcaseList []string `json:"exampleTestcaseList"`
+            Content string `json:"content"`
 			CodeSnippets        []struct {
 				Lang     string `json:"lang"`
 				LangSlug string `json:"langSlug"`
 				Code     string `json:"code"`
 			} `json:"codeSnippets"`
-		} `json:"question"`
-	} `json:"data"`
+        }
+    }
+    Errors []GraphqlError
 }
 
 type Question struct {
@@ -25,17 +27,6 @@ type Question struct {
 	TopicTags          []struct {
 		Name string `json:"name"`
 	} `json:"topicTags"`
-}
-
-type QuestionContent struct {
-	Data struct {
-		Question struct {
-			Content string `json:"content"`
-		} `json:"question"`
-	} `json:"data"`
-	GraphQLError []struct {
-		Message string `json:"message"`
-	} `json:"errors"`
 }
 
 type TagResponse struct {
@@ -164,6 +155,12 @@ type SubmissionResponse struct {
 
 func newProblemOfTheDayResponse(data []byte) (*ProblemOfTheDayResponse, error) {
     v := ProblemOfTheDayResponse{}
+    err := json.Unmarshal(data,&v)
+    return &v, err
+}
+
+func newDownloadProblemResponse(data []byte) (*DownloadProblemResponse, error){
+    v := DownloadProblemResponse{}
     err := json.Unmarshal(data,&v)
     return &v, err
 }
