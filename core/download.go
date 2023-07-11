@@ -24,31 +24,43 @@ query questionContent($titleSlug: String!) {
   }
 }`
 
+func newDownloadProblemQuery(query , problem string) *GraphqlQuery {
+    return &GraphqlQuery{
+        Query: queryDownload,
+        Variables: map[string]interface{}{
+            "titleSlug" : problem,
+        },
+        OperationName: "questionContent",
+    }
+}
 func DownloadProblem(problem, lang string) (error) {
 
     problem = utils.GetTitleSlug(problem)  
 
+    queryDownload := newDownloadProblemQuery(query, problem)
+
     query, err := json.Marshal(queryDownload)
 
     if err != nil {
-        return err 
+        return fmt.Errorf("Json Marshalling error %v", err) 
     }
+    
     request, err := utils.NewNormalRequest("POST",GRAPHQL_URL,query)
 
     if err != nil {
-        return err
+        return fmt.Errorf("Request creation err: %v",err)
     }
 
     response, err := utils.SendRequest(request)
 
     if err != nil {
-        return err
+        return fmt.Errorf("Response error: %v",err)
     }
 
     data, err := newDownloadProblemResponse(response)
 
     if err != nil {
-        return err
+        return fmt.Errorf("Response parsing err: %v", err)
     }
 
     if len(data.Errors) > 0 {
@@ -58,7 +70,7 @@ func DownloadProblem(problem, lang string) (error) {
     problemHTML := data.Data.Question.Content
 
     if err := utils.RenderHTML(problemHTML); err != nil {
-        return err
+        return fmt.Errorf("HTML rendering error, did you install lynx? : %v", err)
     }
  
     return createCodeFile(problem,lang,data)
@@ -84,6 +96,7 @@ func createCodeFile(problem, lang string, cnt *DownloadProblemResponse) error {
 		io.WriteString(Editorfile, val+";\n")
 		io.WriteString(Editorfile, "\n")
 	}
+
 	io.WriteString(Editorfile, "*/\n")
 
 	for _, val := range cnt.Data.Question.CodeSnippets {

@@ -1,10 +1,13 @@
 package utils
 
 import (
+	"bufio"
+	"fmt"
+	"os"
 	"os/exec"
 	"strings"
-    "os"
-    "fmt"
+
+	"github.com/gookit/color"
 )
 
 var testCaseList []string
@@ -132,3 +135,22 @@ func ParseTestCases(content string) (string, error) {
 	return testCases, nil
 }
 
+func Color(difficulty string) string {
+    if difficulty == "Easy" {
+        return color.Green.Sprint(difficulty)
+    }
+    if difficulty == "Medium" {
+        return color.Yellow.Sprintf(difficulty)
+    }
+    if difficulty == "Hard" {
+        return color.Red.Sprintf(difficulty)
+    }
+    return ""
+}
+
+func UserInput(prompt string) string {
+    fmt.Printf("%v",prompt)
+    scanner := bufio.NewScanner(os.Stdin)
+    scanner.Scan()
+    return scanner.Text()
+}
