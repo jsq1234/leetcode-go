@@ -25,30 +25,6 @@ func NewProblemOfTheDayQuery() ([]byte,error){
     return json.Marshal(&query)
 }
 
-type ProblemOfTheDayResponse struct {
-	Data struct {
-		ActiveDailyCodingChallengeQuestion struct {
-			Link     string   `json:"link"`
-            Question struct {
-                QuestionID         string `json:"questionId"`
-                QuestionFrontEndID string `json:"questionFrontEndId"`
-                IsPaidyOnly        bool   `json:"isPaidOnly"`
-                Title              string `json:"title"`
-                Difficulty         string `json:"difficulty"`
-                TopicTags          []struct {
-                    Name string `json:"name"`
-                } `json:"topicTags"`
-            } `json:"question"`
-		} `json:"activeDailyCodingChallengeQuestion"`
-	} `json:"data"`
-}
-
-func NewProblemOfTheDayResponse(data []byte) (*ProblemOfTheDayResponse, error){
-    v := ProblemOfTheDayResponse{}
-    err := json.Unmarshal(data,&v)
-    return &v, err
-}
-
 func GetProblemOfTheDay() (*ProblemOfTheDayResponse,error) {
 
     body, err := NewProblemOfTheDayQuery()
@@ -69,5 +45,5 @@ func GetProblemOfTheDay() (*ProblemOfTheDayResponse,error) {
         return nil, err
     }
 
-    return NewProblemOfTheDayResponse(response)
+    return newProblemOfTheDayResponse(response)
 }
