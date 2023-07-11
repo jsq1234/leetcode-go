@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"github.com/Manan-Prakash-Singh/leetcode-go/utils"
+    "github.com/pterm/pterm"
+	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 type GraphqlQuery struct {
@@ -43,4 +45,26 @@ func ProblemOfTheDay() {
         } 
     }
 
+}
+
+func AuthenticateUser() {
+    spinnerInfo, _ := pterm.DefaultSpinner.Start("Authenticating...") 
+    data, err := Authenticate()
+    if err != nil {
+        spinnerInfo.Fail(err)
+        os.Exit(1)
+    }
+    spinnerInfo.Success("")
+
+    t := table.NewWriter()
+    t.SetOutputMirror(os.Stdout)
+    t.AppendRow([]interface{}{ "Username", data.UserName }) 
+    t.AppendSeparator()
+    t.AppendRows([]table.Row{
+        { "Easy", data.EasyCount },
+        { "Medium", data.MediumCount },
+        { "Hard", data.HardCount },
+    })
+    t.SetStyle(table.StyleBold)
+    t.Render()
 }
