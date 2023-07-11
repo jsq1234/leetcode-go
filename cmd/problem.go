@@ -5,8 +5,7 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-
+	"github.com/Manan-Prakash-Singh/leetcode-go/core"
 	"github.com/spf13/cobra"
 )
 
@@ -16,17 +15,13 @@ var (
         Use:   "problem",
         Short: "Download the problem in the current directory",
         Long: ``,
-        Args: cobra.MaximumNArgs(1),
+        Args: cobra.ExactArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
-            if !download && lang == "" && len(args) == 0 {
-               fmt.Fprintf(os.Stderr,"Expected 1 args, 0 given.\n")
-               cmd.Help()
-               os.Exit(1)
+            if err := core.DownloadProblem(args[0], lang); err != nil {
+                fmt.Println(err)
             }
-
         },
     }
-    download bool
     lang string
 )
 
@@ -42,8 +37,6 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// problemCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-    problemCmd.Flags().BoolVarP(&download, "download", "d", false, "Download the problem in the current directory")
     problemCmd.Flags().StringVarP(&lang, "lang", "l", "", "Prog. Language to download code")
-    problemCmd.MarkFlagsRequiredTogether("download","lang")
-
+    problemCmd.MarkFlagRequired("lang")
 }

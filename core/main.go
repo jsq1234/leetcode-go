@@ -20,7 +20,6 @@ const (
     GRAPHQL_URL = "https://leetcode.com/graphql"
 )
 
-
 func ProblemOfTheDay() {
     data, err := GetProblemOfTheDay()
 

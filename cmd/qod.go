@@ -11,7 +11,7 @@ import (
 // qodCmd represents the qod command
 var qodCmd = &cobra.Command{
 	Use:   "qod",
-	Short: "Get problem of the day. If you want to download it, use the [problem] command",
+	Short: "Get problem of the day",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
         core.ProblemOfTheDay()
