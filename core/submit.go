@@ -7,6 +7,7 @@ import (
     "github.com/gookit/color"
     "io"
     "os"
+    "github.com/pterm/pterm"
 	"github.com/Manan-Prakash-Singh/leetcode-go/utils"
 )
 
@@ -106,7 +107,8 @@ func execute(id string) (*SubmissionResponse,error) {
     return submissionResult, nil 
 }
 
-func RunTestCases(fileName string, submit bool) error {
+func runTestCases(fileName string, submit bool) error {
+
 
     testCaseResponse, err := getSubmissionId(fileName,submit)
 
@@ -147,18 +149,30 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 
 	case "Compile Error":
 
-		color.Redln("Compile Error")
-		color.Redln(Result.FullCompileError)
+        pterm.Info.WithPrefix(pterm.Prefix{ 
+            Style: &pterm.Style{pterm.FgBlack, pterm.BgRed,pterm.Bold},
+            Text: " COMPILE ERROR ",
+        }).Println()
+
+        color.Redln(Result.FullCompileError)
 
 	case "Accepted":
 
 		if testCaseResponse.InterpretId == Result.SubmissionID {
 			for i, testCase := range utils.TestCaseList {
 
-				if Result.CodeAnswer[i] != Result.ExpectedCodeAnswer[i] {
-					color.Redln("Wrong Answer")
+                if Result.CodeAnswer[i] != Result.ExpectedCodeAnswer[i] {
+                    
+                    pterm.Info.WithPrefix(pterm.Prefix{ 
+                        Style: &pterm.Style{pterm.FgBlack, pterm.BgRed,pterm.Bold},
+                        Text: " WRONG ANSWER ",
+                    }).Println()
+
 				} else {
-					color.Greenln("Correct Answer")
+                    pterm.Info.WithPrefix(pterm.Prefix{ 
+                        Style: &pterm.Style{pterm.FgBlack, pterm.BgGreen, pterm.Bold},
+                        Text: " CORRECT ANSWER ",
+                    }).Println()
 				}
 
 				fmt.Println("Input")
@@ -172,9 +186,13 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 			}
 		}
 
-		if fmt.Sprint(testCaseResponse.SubmissionId) == Result.SubmissionID {
+        if fmt.Sprint(testCaseResponse.SubmissionId) == Result.SubmissionID {
 
-			color.Greenln("Accepted")
+            pterm.Info.WithPrefix(pterm.Prefix{ 
+                Style: &pterm.Style{pterm.FgBlack, pterm.BgGreen, pterm.Bold},
+                Text: " ACCEPTED ",
+            }).Println()
+
 			fmt.Printf("Test cases passed: %d/%d\n", Result.TotalCorrect, Result.TotalTestcases)
 			fmt.Printf("Runtime : %v [Beats : %0.2f%%]\n", Result.StatusRuntime, Result.RuntimePercentile)
 			fmt.Printf("Memory : %v [Beats : %0.2f%%]\n", Result.StatusMemory, Result.MemoryPercentile)
@@ -183,7 +201,11 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 
 	case "Wrong Answer":
 
-		color.Redln("Wrong Answer")
+        pterm.Info.WithPrefix(pterm.Prefix{ 
+            Style: &pterm.Style{pterm.FgBlack, pterm.BgRed,pterm.Bold},
+            Text: " WRONG ANSWER ",
+        }).Println()
+
 		fmt.Printf("Test cases passed: %d/%d\n", Result.TotalCorrect, Result.TotalTestcases)
 		fmt.Println("Last test case executed: ")
 		fmt.Println(Result.LastTestcase)
@@ -195,13 +217,20 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 	case "Time Limit Exceeded":
 
 		if testCaseResponse.InterpretId == Result.SubmissionID {
-			color.Redln("Time Limit Exceeded")
-		}
-		if fmt.Sprint(testCaseResponse.SubmissionId) == Result.SubmissionID {
+            pterm.Info.WithPrefix(pterm.Prefix{ 
+                Style: &pterm.Style{pterm.FgBlack, pterm.BgRed,pterm.Bold},
+                Text: " TIME LIMIT EXCEEDED ",
+            }).Println()
+        }
+        if fmt.Sprint(testCaseResponse.SubmissionId) == Result.SubmissionID {
 
-			color.Redln("Time Limit Exceeded")
-			fmt.Printf("Test cases passed: %d/%d\n", Result.TotalCorrect, Result.TotalTestcases)
-			fmt.Println("Last test case executed: ")
+            pterm.Info.WithPrefix(pterm.Prefix{ 
+                Style: &pterm.Style{pterm.FgBlack, pterm.BgRed,pterm.Bold},
+                Text: " TIME LIMIT EXCEEDED ",
+            }).Println()
+            
+            fmt.Printf("Test cases passed: %d/%d\n", Result.TotalCorrect, Result.TotalTestcases)
+            fmt.Println("Last test case executed: ")
 			fmt.Println(Result.LastTestcase)
 			fmt.Println("Expected Output:")
 			fmt.Println(Result.ExpectedOutput)
@@ -212,9 +241,9 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 	}
 
 }
-func SubmitCode(fileName string) error {
+func submitCode(fileName string) error {
 
-	if err := RunTestCases(fileName, true); err != nil {
+	if err := runTestCases(fileName, true); err != nil {
 		return err
 	}
 

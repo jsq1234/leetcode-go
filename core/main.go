@@ -71,7 +71,11 @@ func SearchProblem(searchKey string, count int) {
 
     spinnerInfo, _ := pterm.DefaultSpinner.Start("Searching") 
     ques, err := searchProblemRequest(searchKey,count)
-    if err != nil {
+    if err != nil || len(ques) == 0 {
+        if len(ques) == 0 {
+            spinnerInfo.Fail("No question matched the search term")
+            os.Exit(1)
+        }
         spinnerInfo.Fail(err)
         os.Exit(1)
     }
@@ -164,3 +168,22 @@ func GetTopics(topic string){
     DownloadProblem(problem,lang)
 }
 
+func RunCode(fileName string) {
+    spinnerInfo, _ := pterm.DefaultSpinner.Start("Executing...")
+    err := runTestCases(fileName, false)
+    if err != nil {
+        spinnerInfo.Fail(err)
+        os.Exit(1)
+    }
+    spinnerInfo.Stop()
+}
+
+func SubmitCode(fileName string) {
+    spinnerInfo, _ := pterm.DefaultSpinner.Start("Submitting...")
+    err := submitCode(fileName) 
+    if err != nil {
+        spinnerInfo.Fail(err)
+        os.Exit(1)
+    }
+    spinnerInfo.Stop()
+}
