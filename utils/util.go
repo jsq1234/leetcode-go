@@ -3,11 +3,12 @@ package utils
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/gookit/color"
+	"golang.org/x/net/html"
 )
 
 var TestCaseList []string
@@ -46,7 +47,7 @@ func getSessionKey() (*SessionKey, error) {
 }
 
 func RenderHTML(html_content string) error {
-
+/*
 	cmd := exec.Command("lynx", "-stdin", "-dump")
 	cmd.Stdin = strings.NewReader(html_content)
 
@@ -66,6 +67,45 @@ func RenderHTML(html_content string) error {
 	if err != nil {
 		return err
 	}
+
+    return nil */
+    
+    doc, err := html.Parse(strings.NewReader(html_content))
+
+    if err != nil {
+        return err
+    }
+
+    var output string
+    var traverse func(*html.Node) 
+    
+    traverse = func(n* html.Node){ 
+        if n.Type == html.TextNode {
+            if strings.HasPrefix(n.Data,"\n") {
+                n.Data = "\n"
+            }
+            output += n.Data
+        }
+        for c := n.FirstChild; c != nil; c = c.NextSibling {
+           traverse(c)
+        }
+    }
+
+    traverse(doc)
+
+    file, err := os.Create("Problem.txt")
+
+    if err != nil {
+        return err
+    }
+
+    defer file.Close()
+
+    _, err = io.Copy(file,strings.NewReader(output))
+
+    if err != nil {
+        return err
+    }
 
     return nil
 }
