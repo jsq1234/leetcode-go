@@ -3,9 +3,11 @@ package core
 import (
 	"fmt"
 	"os"
+	"strings"
+
 	"github.com/Manan-Prakash-Singh/leetcode-go/utils"
-    "github.com/pterm/pterm"
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/pterm/pterm"
 )
 
 type GraphqlQuery struct {
@@ -39,10 +41,7 @@ func ProblemOfTheDay() {
 
     if reply == "y" {
         lang := utils.UserInput("Language? [cpp,java,python,etc.]: ")
-        fmt.Println("Downloading problem of the day....")
-        if err := DownloadProblem(title,lang); err != nil {
-              fmt.Println(err)
-        } 
+        DownloadProblem(title,lang)
     }
 
 }
@@ -67,4 +66,56 @@ func AuthenticateUser() {
     })
     t.SetStyle(table.StyleBold)
     t.Render()
+}
+
+func SearchProblem(searchKey string, count int) {
+
+    spinnerInfo, _ := pterm.DefaultSpinner.Start("Searching") 
+    ques, err := searchProblemRequest(searchKey,count)
+    if err != nil {
+        spinnerInfo.Fail(err)
+        os.Exit(1)
+    }
+    spinnerInfo.Success("") 
+
+    var opts []string
+
+    maxLen := 0
+    for _, val := range ques {
+        if maxLen < len(val.Title) {
+            maxLen = len(val.Title)
+        }
+    }
+
+    for _,val := range ques {
+        opts = append(opts,fmt.Sprintf("%-*s\t[%s]",maxLen,val.Title,utils.Color(val.Difficulty)))
+    }
+
+    p := pterm.DefaultInteractiveSelect
+    p = *p.WithDefaultText("Select the problem")
+    p = *p.WithMaxHeight(count)
+
+    selectedOptions, _ := p.WithOptions(opts).Show()
+
+    problem := selectedOptions[:strings.Index(selectedOptions,"[")]
+    problem = strings.Trim(problem, "\t \n")
+
+    DownloadProblem(problem,"cpp")
+}
+
+func DownloadProblem(problem, lang string) {
+    spinnerInfo, _ := pterm.DefaultSpinner.Start("Downloading")
+    err := _downloadProblem(problem,lang)
+    if err != nil {
+        spinnerInfo.Fail(err)
+        os.Exit(1)
+    }
+    spinnerInfo.InfoPrinter = &pterm.PrefixPrinter{
+		MessageStyle: &pterm.Style{pterm.FgGreen},
+		Prefix: pterm.Prefix{
+			Style: &pterm.Style{pterm.FgBlack, pterm.BgGreen},
+			Text:  " DOWNLOADED ",
+		},
+	}
+    spinnerInfo.Info("")
 }

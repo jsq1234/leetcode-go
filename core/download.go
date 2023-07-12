@@ -33,7 +33,7 @@ func newDownloadProblemQuery(query , problem string) *GraphqlQuery {
         OperationName: "questionContent",
     }
 }
-func DownloadProblem(problem, lang string) (error) {
+func _downloadProblem(problem, lang string) error {
 
     problem = utils.GetTitleSlug(problem)  
 

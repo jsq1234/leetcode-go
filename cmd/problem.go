@@ -4,7 +4,6 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"github.com/Manan-Prakash-Singh/leetcode-go/core"
 	"github.com/spf13/cobra"
 )
@@ -17,9 +16,7 @@ var (
         Long: ``,
         Args: cobra.ExactArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
-            if err := core.DownloadProblem(args[0], lang); err != nil {
-                fmt.Println(err)
-            }
+            core.DownloadProblem(args[0], lang)
         },
     }
     lang string
