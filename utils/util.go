@@ -10,7 +10,7 @@ import (
 	"github.com/gookit/color"
 )
 
-var testCaseList []string
+var TestCaseList []string
 
 type SessionKey struct {
     Csrftoken string
@@ -113,7 +113,7 @@ func ParseTestCases(content string) (string, error) {
 
 	var testCases string
 
-	testCaseList = make([]string,0,3)
+	TestCaseList = make([]string,0,3)
 
 	idx := 0
 
@@ -126,7 +126,7 @@ func ParseTestCases(content string) (string, error) {
 		}
 
 		testCases += content[:idx] + "\n"
-		testCaseList = append(testCaseList, content[:idx] + "\n")
+		TestCaseList = append(TestCaseList, content[:idx] + "\n")
 		content = strings.TrimLeft(content[idx+1:], "\t\n ")
 	}
 
