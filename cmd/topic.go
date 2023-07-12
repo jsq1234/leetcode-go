@@ -1,11 +1,10 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
+	"github.com/Manan-Prakash-Singh/leetcode-go/core"
 	"github.com/spf13/cobra"
 )
 
@@ -15,8 +14,9 @@ var (
         Use:   "topic",
         Short: "Get a list of problems of a particular topic",
         Long: `Get a list of problems of a particular topic`,
+        Args: cobra.ExactArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
-            fmt.Println("topic called")
+            core.GetTopics(args[0])
         },
     }
     hard bool

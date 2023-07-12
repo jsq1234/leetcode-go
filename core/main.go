@@ -3,9 +3,10 @@ package core
 import (
 	"fmt"
 	"os"
-	"strings"
-
-	"github.com/Manan-Prakash-Singh/leetcode-go/utils"
+    "strings"
+    "github.com/gookit/color"
+    "text/tabwriter"
+    "github.com/Manan-Prakash-Singh/leetcode-go/utils"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/pterm/pterm"
 )
@@ -118,4 +119,36 @@ func DownloadProblem(problem, lang string) {
 		},
 	}
     spinnerInfo.Info("")
+}
+
+func GetTopics(topic string){
+    str := "Fetcing " + topic + " problems..."
+    spinnerInfo, _ := pterm.DefaultSpinner.Start(str)
+    data, err := getTopic(topic)
+    if err != nil {
+        spinnerInfo.Fail(err)
+        os.Exit(1)
+    }
+    spinnerInfo.Success("")
+    
+    questions := data.Questions
+
+    w := tabwriter.NewWriter(os.Stdout, 4, 4, 4, ' ', 0)
+
+	for i, val := range questions {
+		var difficulty string
+		switch val.Difficulty {
+		case "Hard":
+			difficulty = color.Red.Sprintf(val.Difficulty)
+		case "Medium":
+			difficulty = color.Yellow.Sprintf(val.Difficulty)
+		case "Easy":
+			difficulty = color.Green.Sprintf(val.Difficulty)
+
+		}
+		fmt.Fprintf(w, "%v.\t%v\t[%v]\n", i+1, val.Title, difficulty)
+	}
+
+	w.Flush()
+
 }
