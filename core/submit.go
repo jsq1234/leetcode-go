@@ -82,19 +82,27 @@ func getSubmissionId(fileName string, submit bool) (*RunTestCaseResponse, error)
 func execute(id string) (*SubmissionResponse,error) {
     
     submissionResult := &SubmissionResponse{}
+
     url := "https://leetcode.com/submissions/detail/" + id + "/check/"
+
     request, err := utils.NewAuthRequest("GET",url,nil)
+
     if err != nil {
         return nil, err
     }
+
     response, err := utils.SendRequest(request)
+
     if err != nil {
         return nil, err
     }
+
     err = json.Unmarshal(response,&submissionResult)
+
     if err != nil {
         return nil, err
     }
+
     return submissionResult, nil 
 }
 
@@ -185,6 +193,7 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 		fmt.Println(Result.CodeOutput.(string))
 
 	case "Time Limit Exceeded":
+
 		if testCaseResponse.InterpretId == Result.SubmissionID {
 			color.Redln("Time Limit Exceeded")
 		}
