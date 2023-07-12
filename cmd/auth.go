@@ -12,7 +12,12 @@ import (
 var authCmd = &cobra.Command{
 	Use:   "auth",
     Short: "Authenticate user using cookies",
-	Long: `Authenticate the user using csrftoken and LEETCODE_SESSION`,
+	Long: `Authenticate the user using csrftoken and LEETCODE_SESSION.
+You must create an environment variable to store cookie.
+Do this using, "export LEETCODE_SESSION_KEY="csrftoken=asdasda.....;LEETCODE_SESSION=sadsda...."
+and preferably put it inside your ~/.bashrc or ~/.zshrc. To obtain your csrftoken and LEETCODE_SESSION,
+open a browser and go to Developer Tools. Click the Network Tab and browse your leetcode account
+check the headers. You will find these terms in Cookie field of request headers.`,
 	Run: func(cmd *cobra.Command, args []string) {
         core.AuthenticateUser()
 	},
