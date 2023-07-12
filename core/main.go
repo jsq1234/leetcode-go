@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
     "strings"
-    "github.com/gookit/color"
-    "text/tabwriter"
     "github.com/Manan-Prakash-Singh/leetcode-go/utils"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/pterm/pterm"
@@ -135,26 +133,34 @@ func GetTopics(topic string){
         spinnerInfo.Fail(err)
         os.Exit(1)
     }
-    spinnerInfo.Success("")
+    ques := data.Questions
+    quesLen := len(ques)
+    spinnerInfo.Success(fmt.Sprintf("%d questions found.",quesLen))
     
-    questions := data.Questions
+    var opts []string
 
-    w := tabwriter.NewWriter(os.Stdout, 4, 4, 4, ' ', 0)
+    maxLen := 0
+    for _, val := range ques {
+        if maxLen < len(val.Title) {
+            maxLen = len(val.Title)
+        }
+    }
 
-	for i, val := range questions {
-		var difficulty string
-		switch val.Difficulty {
-		case "Hard":
-			difficulty = color.Red.Sprintf(val.Difficulty)
-		case "Medium":
-			difficulty = color.Yellow.Sprintf(val.Difficulty)
-		case "Easy":
-			difficulty = color.Green.Sprintf(val.Difficulty)
+    for _,val := range ques {
+        opts = append(opts,fmt.Sprintf("%-*s\t[%s]",maxLen,val.Title,utils.Color(val.Difficulty)))
+    }
 
-		}
-		fmt.Fprintf(w, "%v.\t%v\t[%v]\n", i+1, val.Title, difficulty)
-	}
+    p := pterm.DefaultInteractiveSelect
+    p = *p.WithDefaultText("Select the problem")
+    p = *p.WithMaxHeight(25)
 
-	w.Flush()
+    selectedOptions, _ := p.WithOptions(opts).Show()
 
+    problem := selectedOptions[:strings.Index(selectedOptions,"[")]
+    problem = strings.Trim(problem, "\t \n")
+    
+    lang := utils.UserInput("Select a language: ")
+
+    DownloadProblem(problem,lang)
 }
+
