@@ -8,6 +8,7 @@ type DownloadProblemResponse struct {
 			QuestionID          string   `json:"questionId"`
 			ExampleTestcaseList []string `json:"exampleTestcaseList"`
             Content string `json:"content"`
+            IsPaidOnly  bool `json:"isPaidOnly"`
 			CodeSnippets        []struct {
 				Lang     string `json:"lang"`
 				LangSlug string `json:"langSlug"`

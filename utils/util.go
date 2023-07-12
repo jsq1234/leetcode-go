@@ -101,7 +101,7 @@ func RenderHTML(html_content string) error {
 
     defer file.Close()
 
-    _, err = io.Copy(file,strings.NewReader(output))
+    _, err = io.WriteString(file,output)
 
     if err != nil {
         return err

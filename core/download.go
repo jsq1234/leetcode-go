@@ -15,6 +15,7 @@ query questionContent($titleSlug: String!) {
     mysqlSchemas
     questionId
     questionFrontendId
+    isPaidOnly
     exampleTestcaseList
     codeSnippets {
       lang
@@ -52,7 +53,7 @@ func _downloadProblem(problem, lang string) error {
     }
 
     response, err := utils.SendRequest(request)
-
+    
     if err != nil {
         return fmt.Errorf("Response error: %v",err)
     }
@@ -61,6 +62,10 @@ func _downloadProblem(problem, lang string) error {
 
     if err != nil {
         return fmt.Errorf("Response parsing err: %v", err)
+    }
+
+    if data.Data.Question.IsPaidOnly {
+        return fmt.Errorf("The selected problem is premium problem.")    
     }
 
     if len(data.Errors) > 0 {
