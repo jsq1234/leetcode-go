@@ -94,14 +94,20 @@ func SearchProblem(searchKey string, count int) {
 
     p := pterm.DefaultInteractiveSelect
     p = *p.WithDefaultText("Select the problem")
-    p = *p.WithMaxHeight(count)
+    maxHeight := count
+    if count >= 20 {
+        maxHeight = 20
+    }
+    p = *p.WithMaxHeight(maxHeight)
 
     selectedOptions, _ := p.WithOptions(opts).Show()
 
     problem := selectedOptions[:strings.Index(selectedOptions,"[")]
     problem = strings.Trim(problem, "\t \n")
 
-    DownloadProblem(problem,"cpp")
+    lang := utils.UserInput("Select a language: ")
+
+    DownloadProblem(problem,lang)
 }
 
 func DownloadProblem(problem, lang string) {

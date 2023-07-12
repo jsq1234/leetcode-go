@@ -9,13 +9,22 @@ import (
 )
 
 // searchCmd represents the search command
+var (
+    count int
+    plang string
+)
 var searchCmd = &cobra.Command{
 	Use:   "search",
 	Short: "search a problem",
-	Long: ``,
+	Long: `Search a problem from leetcode. Either enclose the problem in double quotes in case of 
+multiple words like "palindrome partionining" or use a dash instead palindrome-partitioning`,
     Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-        core.SearchProblem(args[0],10)
+        val := 10
+        if count != 0 {
+            val = 5 
+        }
+        core.SearchProblem(args[0],val)
 	},
 }
 
@@ -31,4 +40,5 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+    searchCmd.Flags().IntVarP(&count,"num","n",10,"Number of problems to return on search")
 }

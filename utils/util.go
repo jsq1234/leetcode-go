@@ -93,7 +93,7 @@ func RenderHTML(html_content string) error {
 
     traverse(doc)
 
-    file, err := os.Create("Problem.txt")
+    file, err := os.Create("problem.txt")
 
     if err != nil {
         return err
