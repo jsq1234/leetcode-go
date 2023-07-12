@@ -24,17 +24,18 @@ const (
 )
 
 func ProblemOfTheDay() {
+    spinnerInfo, _ := pterm.DefaultSpinner.Start("Fetching question of the day...")
     data, err := GetProblemOfTheDay()
-
     if err != nil {
-        fmt.Fprintln(os.Stderr,err)
+        spinnerInfo.Fail(err)
         os.Exit(1)
     }
 
     title := data.Data.ActiveDailyCodingChallengeQuestion.Question.Title
     difficulty := data.Data.ActiveDailyCodingChallengeQuestion.Question.Difficulty
-
-    fmt.Printf("%v\t[%v]\n",title,utils.Color(difficulty))
+    
+    str := fmt.Sprintf("%v\t%v\n",title,utils.Color(difficulty))
+    spinnerInfo.Success(str)
     
     reply := utils.UserInput("Download problem? [y,n]: ")
 
