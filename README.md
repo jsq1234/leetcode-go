@@ -16,7 +16,7 @@ These tokens can be found from your browser. Open the developer tools and click 
 
 Note: You'll have to always export this environment variable if you wish to submit/run your code to leetcode. To prevent this hasle, put the ``export LEETCODE_SESSION_KEY="..."`` line in your ~/.bashrc or ~/.zshrc file.
 
-### Downloading problem 
+## Downloading problem 
 
 To download the problem, you can use ``leetcode-go problem "problem name in quotes" --lang cpp``. This will download if 
 it can find the problem in cpp. But this requires you to know the full name of thee problem, which can be cumbersome,
