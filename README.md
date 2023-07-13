@@ -20,7 +20,7 @@ Note: You'll have to always export this environment variable if you wish to subm
 
 When you download the code using leetcode-go, it saves it in the form "longest-increasing-subsequence_300". This format is expected when the filename is parsed, so don't change this. Moreover, the sample test cases are written inside the program file, enclosed inside block comments /* */. Each test case is seperated by ``;``. You can add your own test cases in it but make sure to keep the block comment at the top of the file.  
 
-<code>
+```
 /*
 
 [2,7,11,15]
@@ -39,4 +39,4 @@ public:
         
     }
 };
-</code>
+```
