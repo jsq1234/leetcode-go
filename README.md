@@ -20,7 +20,9 @@ Note: You'll have to always export this environment variable if you wish to subm
 
 To download the problem, you can use ``leetcode-go problem "problem name in quotes" --lang cpp``. This will download if 
 it can find the problem in cpp. But this requires you to know the full name of thee problem, which can be cumbersome,
-therfore, you can use ``leetcode-go search "search term"`` instead to search for the problem and then it will automatically ask you to language that you need to download the problem in. The problem statement is downloaded in a ``problem.txt` file whereas the code snippet is downloaded as your chosen language.
+therfore, you can use ``leetcode-go search "search term"`` instead to search for the problem and then it will
+automatically ask you to language that you need to download the problem in. The problem statement is downloaded in a
+``problem.txt`` file whereas the code snippet is downloaded as your chosen language.
 
 ## Submitting/Running your code
 
