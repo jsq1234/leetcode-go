@@ -204,6 +204,13 @@ func SuggestQuestions(problem string) {
         }).Println(err)
     }
 
+    reply := utils.UserInput("Would you like to see similar questions? [y,n]: ")
+
+    if reply != "y" {
+        return 
+    }
+
+
     var opts []string
 
     ques := data.Data.Question.NextChallenges
