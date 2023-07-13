@@ -16,6 +16,12 @@ These tokens can be found from your browser. Open the developer tools and click 
 
 Note: You'll have to always export this environment variable if you wish to submit/run your code to leetcode. To prevent this hasle, put the ``export LEETCODE_SESSION_KEY="..."`` line in your ~/.bashrc or ~/.zshrc file.
 
+### Downloading problem 
+
+To download the problem, you can use ``leetcode-go problem "problem name in quotes" --lang cpp``. This will download if 
+it can find the problem in cpp. But this requires you to know the full name of thee problem, which can be cumbersome,
+therfore, you can use ``leetcode-go search "search term"`` instead to search for the problem and then it will automatically ask you to language that you need to download the problem in. The problem statement is downloaded in a ``problem.txt` file whereas the code snippet is downloaded as your chosen language.
+
 ## Submitting/Running your code
 
 When you download the code using leetcode-go, it saves it in the form "longest-increasing-subsequence_300". This format is expected when the filename is parsed, so don't change this. Moreover, the sample test cases are written inside the program file, enclosed inside block comments /* */. Each test case is seperated by ``;``. You can add your own test cases in it but make sure to keep the block comment at the top of the file.  
