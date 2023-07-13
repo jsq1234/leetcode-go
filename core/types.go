@@ -2,6 +2,19 @@ package core
 
 import "encoding/json"
 
+type SuggestResponse struct {
+    Data struct {
+        Question struct {
+            NextChallenges []struct{
+                Difficulty string
+                Title string
+                TitleSlug string
+                QuestionFrontEndID string
+            }
+        }
+    }
+}
+
 type DownloadProblemResponse struct {
     Data struct {
         Question struct {

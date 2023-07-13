@@ -187,4 +187,51 @@ func SubmitCode(fileName string) {
         os.Exit(1)
     }
     spinnerInfo.Stop()
+
+	_, problemName, _, _ := utils.ParseFileName(fileName)        
+
+    SuggestQuestions(problemName)
+}
+
+func SuggestQuestions(problem string) {
+
+    data, err := suggestProblems(problem)
+
+    if err != nil {
+        pterm.Info.WithPrefix(pterm.Prefix{ 
+            Style: &pterm.Style{pterm.FgBlack, pterm.BgRed,pterm.Bold},
+            Text: " ERROR ",
+        }).Println(err)
+    }
+
+    var opts []string
+
+    ques := data.Data.Question.NextChallenges
+
+    maxLen := 0
+    dict := make(map[string]string)
+
+    for _, val := range ques {
+        dict[val.Title] = val.TitleSlug
+        if maxLen < len(val.Title) {
+            maxLen = len(val.Title)
+        }
+    }
+
+    for _,val := range ques {
+        opts = append(opts,fmt.Sprintf("%-*s\t[%s]",maxLen,val.Title,utils.Color(val.Difficulty)))
+    }
+
+    p := pterm.DefaultInteractiveSelect
+    p = *p.WithDefaultText("Select the problem")
+    p = *p.WithMaxHeight(25)
+
+    selectedOptions, _ := p.WithOptions(opts).Show()
+    newProblem := selectedOptions[:strings.Index(selectedOptions,"[")]
+    newProblem = strings.Trim(newProblem,"\n\t ")
+
+    lang := utils.UserInput("Select a language: ")
+
+    DownloadProblem(newProblem,lang)
+
 }
