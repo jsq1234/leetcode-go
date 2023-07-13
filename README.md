@@ -50,3 +50,25 @@ public:
 ### Note : The problem must be in the current directory.
 
 For help, just type ``leetcode-go help``
+```
+Leetcode-go is a simple cli that can search, download, and submit problems
+on leetcode through the command line
+
+Usage:
+  leetcode-go [command]
+
+Available Commands:
+  auth        Authenticate user using cookies
+  help        Help about any command
+  problem     Download the problem in the current directory
+  qod         Get problem of the day
+  run         Run your code with the test cases in your program file.
+  search      search a problem
+  submit      Submit your code to leetcode
+  topic       Get a list of problems of a particular topic
+
+Flags:
+  -h, --help   help for leetcode-go
+
+Use "leetcode-go [command] --help" for more information about a command.
+```
