@@ -154,8 +154,6 @@ func ParseFileName(fileName string) (questionID string, problemName string, lang
         fileName = fileName[i+1:]
     }
     
-    fmt.Println(fileName)
-
 	if !strings.Contains(fileName, ".") {
 		err = fmt.Errorf("No extension found in the given file. Please write the extension, ex. .cpp, .js")
 		return

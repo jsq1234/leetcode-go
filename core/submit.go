@@ -107,13 +107,12 @@ func execute(id string) (*SubmissionResponse,error) {
     return submissionResult, nil 
 }
 
-func runTestCases(fileName string, submit bool) error {
-
+func runTestCases(fileName string, submit bool) (bool,error) {
 
     testCaseResponse, err := getSubmissionId(fileName,submit)
 
     if err != nil {
-        return err
+        return false, err
     }
 
     var id string
@@ -129,21 +128,23 @@ func runTestCases(fileName string, submit bool) error {
     for {
         Result, err = execute(id)
         if err != nil {
-            return err
+            return false, err
         }
         if Result.State == "SUCCESS" {
             break
         }
     }
 
-    OutputResult(testCaseResponse,Result)
-    return nil
+    res := OutputResult(testCaseResponse,Result)
+    return res, nil 
 }
 
 
-func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionResponse) {
+func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionResponse) (bool){
 
 	statusMsg := Result.StatusMsg
+
+    passed := false
 
 	switch statusMsg {
 
@@ -155,6 +156,8 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
         }).Println()
 
         color.Redln(Result.FullCompileError)
+
+        passed = false 
 
 	case "Accepted":
 
@@ -197,6 +200,7 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 			fmt.Printf("Runtime : %v [Beats : %0.2f%%]\n", Result.StatusRuntime, Result.RuntimePercentile)
 			fmt.Printf("Memory : %v [Beats : %0.2f%%]\n", Result.StatusMemory, Result.MemoryPercentile)
 
+            passed = true 
 		}
 
 	case "Wrong Answer":
@@ -240,14 +244,14 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 		}
 	}
 
+    return passed
 }
-func submitCode(fileName string) error {
-
-	if err := runTestCases(fileName, true); err != nil {
-		return err
-	}
-
-	return nil
+func submitCode(fileName string) (bool, error) {
+    res, err := runTestCases(fileName, true)
+    if err != nil {
+        return false, err
+    }
+	return res, nil
 }
 
 

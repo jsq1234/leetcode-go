@@ -171,7 +171,7 @@ func GetTopics(topic string){
 
 func RunCode(fileName string) {
     spinnerInfo, _ := pterm.DefaultSpinner.Start("Executing...")
-    err := runTestCases(fileName, false)
+    _, err := runTestCases(fileName, false)
     if err != nil {
         spinnerInfo.Fail(err)
         os.Exit(1)
@@ -181,16 +181,17 @@ func RunCode(fileName string) {
 
 func SubmitCode(fileName string) {
     spinnerInfo, _ := pterm.DefaultSpinner.Start("Submitting...")
-    err := submitCode(fileName) 
+    res, err := submitCode(fileName) 
     if err != nil {
         spinnerInfo.Fail(err)
         os.Exit(1)
     }
     spinnerInfo.Stop()
 
-	_, problemName, _, _ := utils.ParseFileName(fileName)        
-
-    SuggestQuestions(problemName)
+    if res {
+        _, problemName, _, _ := utils.ParseFileName(fileName)        
+        SuggestQuestions(problemName)
+    }
 }
 
 func SuggestQuestions(problem string) {
