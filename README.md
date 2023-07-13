@@ -5,4 +5,4 @@ Leetcode-go is a CLI written in golang for retrieval and submission of problems 
 
 ## Authorization 
 
-In order for you to run/submit test cases, you must be authorized. This can be done by creating and exporting an
+In order for you to run/submit test cases, you must be authorized. This can be done by creating and exporting an environment variable with the name ``LEETCODE_SESSION_KEY``. 
