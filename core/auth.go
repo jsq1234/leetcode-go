@@ -2,6 +2,7 @@ package core
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Manan-Prakash-Singh/leetcode-go/utils"
 )
 
@@ -33,5 +34,8 @@ func Authenticate() (*userData,error) {
         return nil, err
     }
 
+    if data.UserName == "" {
+        return nil, fmt.Errorf("Couldn't authenticate the user. Renew your cookie")
+    }
     return &data, nil 
 }
