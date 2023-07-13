@@ -47,7 +47,7 @@ public:
     }
 };
 ```
-### Note : The problem must be in the current directory.
+##### Note : The problem must be in the current directory.
 
 For help, just type ``leetcode-go help``
 ```
