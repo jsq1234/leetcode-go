@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
-
-	"github.com/gookit/color"
+    "github.com/zellyn/kooky"
+    _ "github.com/zellyn/kooky/browser/all"
+    "strings"
+    "github.com/gookit/color"
 	"golang.org/x/net/html"
 )
 
@@ -16,6 +17,37 @@ var TestCaseList []string
 type SessionKey struct {
     Csrftoken string
     LeetcodeSession string
+}
+
+func getCookiesFromBrowser() (*SessionKey, error) {
+     
+    token := SessionKey{}
+
+    cookies := kooky.ReadCookies(
+        kooky.Valid,
+        kooky.DomainHasSuffix(`leetcode.com`),
+        kooky.Name("LEETCODE_SESSION"),
+    )
+
+    if len(cookies) == 0 {
+        return nil, fmt.Errorf("Failed to find LEETCODE_SESSION cookie in any browser. Login into your leetcode account and try again. For now, the program only works if you logic through Chrome/Firefox/Safari browsers.")
+    }
+
+    token.LeetcodeSession = cookies[0].Value
+
+    cookies = kooky.ReadCookies(
+        kooky.Valid,
+        kooky.DomainHasPrefix("leetcode.com"),
+        kooky.Name("csrftoken"),
+    )
+
+    if len(cookies) == 0 {
+        return nil, fmt.Errorf("Failed to find LEETCODE_SESSION cookie in any browser. Login into your leetcode account and try again. For now, the program only works if you logic through Chrome/Firefox/Safari browsers.")
+    }
+    
+    token.Csrftoken = cookies[0].Value
+
+    return &token, nil
 }
 
 func getSessionKey() (*SessionKey, error) {

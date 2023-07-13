@@ -19,7 +19,7 @@ func NewNormalRequest(method string, url string, body []byte) (*http.Request, er
 }
 
 func NewAuthRequest(method string, url string, body []byte) (*http.Request, error) {
-    key, err := getSessionKey() 
+    key, err := getCookiesFromBrowser() 
 
     if err != nil {
         return nil, err
