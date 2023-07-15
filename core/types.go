@@ -3,33 +3,33 @@ package core
 import "encoding/json"
 
 type SuggestResponse struct {
-    Data struct {
-        Question struct {
-            NextChallenges []struct{
-                Difficulty string
-                Title string
-                TitleSlug string
-                QuestionFrontEndID string
-            }
-        }
-    }
+	Data struct {
+		Question struct {
+			NextChallenges []struct {
+				Difficulty         string
+				Title              string
+				TitleSlug          string
+				QuestionFrontEndID string
+			}
+		}
+	}
 }
 
 type DownloadProblemResponse struct {
-    Data struct {
-        Question struct {
+	Data struct {
+		Question struct {
 			QuestionID          string   `json:"questionId"`
 			ExampleTestcaseList []string `json:"exampleTestcaseList"`
-            Content string `json:"content"`
-            IsPaidOnly  bool `json:"isPaidOnly"`
+			Content             string   `json:"content"`
+			IsPaidOnly          bool     `json:"isPaidOnly"`
 			CodeSnippets        []struct {
 				Lang     string `json:"lang"`
 				LangSlug string `json:"langSlug"`
 				Code     string `json:"code"`
 			} `json:"codeSnippets"`
-        }
-    }
-    Errors []GraphqlError
+		}
+	}
+	Errors []GraphqlError
 }
 
 type Question struct {
@@ -168,13 +168,13 @@ type SubmissionResponse struct {
 }
 
 func newProblemOfTheDayResponse(data []byte) (*ProblemOfTheDayResponse, error) {
-    v := ProblemOfTheDayResponse{}
-    err := json.Unmarshal(data,&v)
-    return &v, err
+	v := ProblemOfTheDayResponse{}
+	err := json.Unmarshal(data, &v)
+	return &v, err
 }
 
-func newDownloadProblemResponse(data []byte) (*DownloadProblemResponse, error){
-    v := DownloadProblemResponse{}
-    err := json.Unmarshal(data,&v)
-    return &v, err
+func newDownloadProblemResponse(data []byte) (*DownloadProblemResponse, error) {
+	v := DownloadProblemResponse{}
+	err := json.Unmarshal(data, &v)
+	return &v, err
 }
