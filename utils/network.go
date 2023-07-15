@@ -7,40 +7,40 @@ import (
 )
 
 func NewNormalRequest(method string, url string, body []byte) (*http.Request, error) {
-    if method == "POST" {
-        request, err := http.NewRequest(method,url,bytes.NewBuffer(body))
-        if err != nil {
-            return nil, err
-        }
-        request.Header.Add("content-type","application/json")
-        return request, err
-    }
-    return http.NewRequest(method,url,nil)
+	if method == "POST" {
+		request, err := http.NewRequest(method, url, bytes.NewBuffer(body))
+		if err != nil {
+			return nil, err
+		}
+		request.Header.Add("content-type", "application/json")
+		return request, err
+	}
+	return http.NewRequest(method, url, nil)
 }
 
 func NewAuthRequest(method string, url string, body []byte) (*http.Request, error) {
-    key, err := getCookiesFromBrowser() 
+	key, err := getCookiesFromBrowser()
 
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    request, err := NewNormalRequest(method,url,body)
+	request, err := NewNormalRequest(method, url, body)
 
-    if err != nil {
-        return nil, err
-    }
-    
-    request.AddCookie(&http.Cookie{
-        Name: "csrftoken",
-        Value: key.Csrftoken,
-    })
-    request.AddCookie(&http.Cookie{
-        Name: "LEETCODE_SESSION",
-        Value: key.LeetcodeSession,
-    })
+	if err != nil {
+		return nil, err
+	}
 
-    request.Header.Set("Referer", "https://leetcode.com/")
+	request.AddCookie(&http.Cookie{
+		Name:  "csrftoken",
+		Value: key.Csrftoken,
+	})
+	request.AddCookie(&http.Cookie{
+		Name:  "LEETCODE_SESSION",
+		Value: key.LeetcodeSession,
+	})
+
+	request.Header.Set("Referer", "https://leetcode.com/")
 	request.Header.Set("User-Agent", "Mozilla/6.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
 	request.Header.Set("X-csrftoken", key.Csrftoken)
 
@@ -48,21 +48,21 @@ func NewAuthRequest(method string, url string, body []byte) (*http.Request, erro
 }
 
 func SendRequest(request *http.Request) ([]byte, error) {
-    client := &http.Client{}
+	client := &http.Client{}
 
-    response, err := client.Do(request)
-    
-    if err != nil {
-        return nil, err
-    }
+	response, err := client.Do(request)
 
-    defer response.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
-    body, err := io.ReadAll(response.Body)
+	defer response.Body.Close()
 
-    if err != nil {
-        return nil, err
-    }
+	body, err := io.ReadAll(response.Body)
 
-    return body, nil
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
 }
