@@ -4,7 +4,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-    "github.com/Manan-Prakash-Singh/leetcode-go/core"
+	"github.com/Manan-Prakash-Singh/leetcode-go/core"
 	"github.com/spf13/cobra"
 )
 
@@ -12,9 +12,9 @@ import (
 var qodCmd = &cobra.Command{
 	Use:   "qod",
 	Short: "Get problem of the day",
-	Long: ``,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-        core.ProblemOfTheDay()
+		core.ProblemOfTheDay()
 	},
 }
 
