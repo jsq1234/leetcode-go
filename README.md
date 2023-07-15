@@ -9,7 +9,9 @@ If you have golang installed, you can install the app using ``go install``. Simp
 
 ## Authentication
 There is no need to insert your username and password. Just make sure you are logged in into your accout in your browser. It searches through your browser cookies and finds the csrftoken and LEETCODE_SESSION token. For now, this works for firefox and chrome on Linux. To test if you are authenticated, type  
-```leetcode-go auth```
+```
+leetcode-go auth
+```
 
 Note : I still need to test it on MacOS and Windows.
 
