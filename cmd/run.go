@@ -11,12 +11,12 @@ import (
 // runCmd represents the run command
 var runCmd = &cobra.Command{
 	Use:   "run",
-    Short: "Run your code with the test cases in your program file.",
-    Long: `Run your code against the test cases that are in your program file. Make sure the test cases
+	Short: "Run your code with the test cases in your program file.",
+	Long: `Run your code against the test cases that are in your program file. Make sure the test cases
     are the very first thing enclosed in /* */ comment block. Multiple test cases are seperated by ";"`,
-    Args: cobra.ExactArgs(1),
-    Run: func(cmd *cobra.Command, args []string) {
-        core.RunCode(args[0])
+	Args: cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		core.RunCode(args[0])
 	},
 }
 
