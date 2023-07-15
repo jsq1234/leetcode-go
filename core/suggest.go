@@ -17,46 +17,46 @@ query nextChallengePairs($questionSlug: String!) {
     }
 }
 `
-func newSuggestionQuery(problem string) ([]byte,error){
-    query := GraphqlQuery{
-        Query: suggestQuery,
-        Variables: map[string]interface{}{
-          "questionSlug" : problem,
-        },
-        OperationName: "nextChallengePairs",
-    }
 
-    return json.Marshal(query)
+func newSuggestionQuery(problem string) ([]byte, error) {
+	query := GraphqlQuery{
+		Query: suggestQuery,
+		Variables: map[string]interface{}{
+			"questionSlug": problem,
+		},
+		OperationName: "nextChallengePairs",
+	}
+
+	return json.Marshal(query)
 }
-
 
 func suggestProblems(problem string) (*SuggestResponse, error) {
 
-    query, err := newSuggestionQuery(problem)
+	query, err := newSuggestionQuery(problem)
 
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    request, err := utils.NewAuthRequest("POST",GRAPHQL_URL,query)
+	request, err := utils.NewAuthRequest("POST", GRAPHQL_URL, query)
 
-    if err != nil {
-        return nil, err
-    }
-    
-    response, err := utils.SendRequest(request)
-    
-    if err != nil {
-        return nil, err
-    }
-    
-    var data SuggestResponse
+	if err != nil {
+		return nil, err
+	}
 
-    err = json.Unmarshal(response,&data)
-    
-    if err != nil {
-        return nil, err
-    }
+	response, err := utils.SendRequest(request)
 
-    return &data, nil
+	if err != nil {
+		return nil, err
+	}
+
+	var data SuggestResponse
+
+	err = json.Unmarshal(response, &data)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
 }
