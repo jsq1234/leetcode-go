@@ -10,19 +10,20 @@ import (
 
 // topicCmd represents the topic command
 var (
-    topicCmd = &cobra.Command{
-        Use:   "topic",
-        Short: "Get a list of problems of a particular topic",
-        Long: `Get a list of problems of a particular topic`,
-        Args: cobra.ExactArgs(1),
-        Run: func(cmd *cobra.Command, args []string) {
-            core.GetTopics(args[0])
-        },
-    }
-    hard bool
-    medium bool
-    easy bool
+	topicCmd = &cobra.Command{
+		Use:   "topic",
+		Short: "Get a list of problems of a particular topic",
+		Long:  `Get a list of problems of a particular topic`,
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			core.GetTopics(args[0])
+		},
+	}
+	hard   bool
+	medium bool
+	easy   bool
 )
+
 func init() {
 
 	rootCmd.AddCommand(topicCmd)
@@ -37,7 +38,7 @@ func init() {
 	// is called directly, e.g.:
 	// topicCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-    topicCmd.Flags().BoolVarP(&hard,"hard","",false,"Sort by hard")
-    topicCmd.Flags().BoolVarP(&medium,"medium","",false,"Sort by medium")
-    topicCmd.Flags().BoolVarP(&easy,"easy","",false,"Sort by easy")
+	topicCmd.Flags().BoolVarP(&hard, "hard", "", false, "Sort by hard")
+	topicCmd.Flags().BoolVarP(&medium, "medium", "", false, "Sort by medium")
+	topicCmd.Flags().BoolVarP(&easy, "easy", "", false, "Sort by easy")
 }
