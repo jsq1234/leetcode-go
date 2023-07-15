@@ -8,13 +8,7 @@ If you have golang installed, you can install the app using ``go install``. Simp
 ```go install github.com/Manan-Prakash-Singh/leetcode-go@latest```
 
 ## Authentication
-
-In order for you to run/submit test cases, you must be authenticated. This can be done by creating and exporting an environment variable with the name ``LEETCODE_SESSION_KEY``. Put your csrftoken and LEETCODE_SESSION token, seperated by ``;`` and enclosed in double quotes.  
-``export LEETCODE_SESSION_KEY="csrftoken=asdXsdsa......;LEETCODE_SESSION=asdsaASDDD....."``
-
-These tokens can be found from your browser. Open the developer tools and click the network tab. Browse your profile to the see the network traffic. In your request headers, find the ``Cookie`` field. There you will find both ``csrftoken`` and ``LEETCODE_SESSION`` token. Copy them and export the environment variable.
-
-Note: You'll have to always export this environment variable if you wish to submit/run your code to leetcode. To prevent this hasle, put the ``export LEETCODE_SESSION_KEY="..."`` line in your ~/.bashrc or ~/.zshrc file.
+There is no need to insert your username and password. Just make sure you are logged in into your accout in your browser. It searches through your browser cookies and finds the csrftoken and LEETCODE_SESSION token. For now, this works for firefox and chrome on Linux. I still need to test it on MacOS and Windows.
 
 ## Downloading problem 
 
