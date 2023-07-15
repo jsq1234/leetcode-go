@@ -10,16 +10,16 @@ import (
 
 // problemCmd represents the problem command
 var (
-    problemCmd = &cobra.Command{
-        Use:   "problem",
-        Short: "Download the problem in the current directory",
-        Long: ``,
-        Args: cobra.ExactArgs(1),
-        Run: func(cmd *cobra.Command, args []string) {
-            core.DownloadProblem(args[0], lang)
-        },
-    }
-    lang string
+	problemCmd = &cobra.Command{
+		Use:   "problem",
+		Short: "Download the problem in the current directory",
+		Long:  ``,
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			core.DownloadProblem(args[0], lang)
+		},
+	}
+	lang string
 )
 
 func init() {
@@ -34,6 +34,6 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// problemCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-    problemCmd.Flags().StringVarP(&lang, "lang", "l", "", "Prog. Language to download code")
-    problemCmd.MarkFlagRequired("lang")
+	problemCmd.Flags().StringVarP(&lang, "lang", "l", "", "Prog. Language to download code")
+	problemCmd.MarkFlagRequired("lang")
 }
