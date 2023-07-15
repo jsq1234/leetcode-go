@@ -5,7 +5,9 @@ Leetcode-go is a CLI written in golang for retrieval and submission of problems 
 ## Installation 
 
 If you have golang installed, you can install the app using ``go install``. Simply write this to in your terminal.
-```go install github.com/Manan-Prakash-Singh/leetcode-go@latest```
+```
+go install github.com/Manan-Prakash-Singh/leetcode-go@latest
+```
 
 ## Authentication
 There is no need to insert your username and password. Just make sure you are logged in into your accout in your browser. It searches through your browser cookies and finds the csrftoken and LEETCODE_SESSION token. For now, this works for firefox and chrome on Linux. To test if you are authenticated, type  
