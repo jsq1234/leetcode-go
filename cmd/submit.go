@@ -12,9 +12,9 @@ import (
 var submitCmd = &cobra.Command{
 	Use:   "submit",
 	Short: "Submit your code to leetcode",
-    Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-        core.SubmitCode(args[0])
+		core.SubmitCode(args[0])
 	},
 }
 
