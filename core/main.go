@@ -60,6 +60,7 @@ func AuthenticateUser() {
 	t.AppendRow([]interface{}{"Username", data.UserName})
 	t.AppendSeparator()
 	t.AppendRows([]table.Row{
+		{"Total Solved", data.NumSolved},
 		{"Easy", data.EasyCount},
 		{"Medium", data.MediumCount},
 		{"Hard", data.HardCount},
