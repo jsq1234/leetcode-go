@@ -113,12 +113,8 @@ func SearchProblem(searchKey string, count int) {
 	}
 
 	p := pterm.DefaultInteractiveSelect
-	p = *p.WithDefaultText("Select the problem")
-	maxHeight := count
-	if count >= 20 {
-		maxHeight = 20
-	}
-	p = *p.WithMaxHeight(maxHeight)
+	p = *p.WithDefaultText(fmt.Sprintf("Found %d problems", count))
+	p = *p.WithMaxHeight(20)
 
 	selectedOptions, _ := p.WithOptions(opts).Show()
 
@@ -152,6 +148,8 @@ func DownloadProblem(problem string) {
 
 	p := pterm.DefaultInteractiveSelect
 	p = *p.WithDefaultText("Select the language")
+	p = *p.WithMaxHeight(20)
+
 	selectedLang, _ := p.WithOptions(languages).Show()
 	lang := strings.Trim(selectedLang, "\t \n")
 

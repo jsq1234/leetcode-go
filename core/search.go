@@ -43,6 +43,7 @@ func newSearchQuery(searchKey string, limit int) ([]byte, error) {
 func searchProblemRequest(searchKey string, count int) ([]Question, error) {
 
 	query, err := newSearchQuery(searchKey, count)
+
 	if err != nil {
 		return nil, err
 	}
