@@ -34,7 +34,8 @@ func newDownloadProblemQuery(query, problem string) *GraphqlQuery {
 		OperationName: "questionContent",
 	}
 }
-func _downloadProblem(problem, lang string) error {
+
+func downloadProblem(problem string) (*DownloadProblemResponse, error) {
 
 	problem = utils.GetTitleSlug(problem)
 
@@ -43,50 +44,56 @@ func _downloadProblem(problem, lang string) error {
 	query, err := json.Marshal(queryDownload)
 
 	if err != nil {
-		return fmt.Errorf("Json Marshalling error %v", err)
+		return nil, fmt.Errorf("Json Marshalling error %v", err)
 	}
 
 	request, err := utils.NewNormalRequest("POST", GRAPHQL_URL, query)
 
 	if err != nil {
-		return fmt.Errorf("Request creation err: %v", err)
+		return nil, fmt.Errorf("Request creation err: %v", err)
 	}
 
 	response, err := utils.SendRequest(request)
 
 	if err != nil {
-		return fmt.Errorf("Response error: %v", err)
+		return nil, fmt.Errorf("Response error: %v", err)
 	}
 
 	data, err := newDownloadProblemResponse(response)
 
 	if err != nil {
-		return fmt.Errorf("Response parsing err: %v", err)
+		return nil, fmt.Errorf("Response parsing err: %v", err)
 	}
 
 	if data.Data.Question.IsPaidOnly {
-		return fmt.Errorf("The selected problem is premium problem.")
+		return nil, fmt.Errorf("The selected problem is premium problem.")
 	}
 
 	if len(data.Errors) > 0 {
-		return fmt.Errorf("Couldn't find the requested problem. Try doing a search instead.")
+		return nil, fmt.Errorf("Couldn't find the requested problem. Try doing a search instead.")
 	}
 
 	problemHTML := data.Data.Question.Content
 	id := data.Data.Question.QuestionID
 
 	if err := utils.RenderHTML(problem, id, problemHTML); err != nil {
-		return fmt.Errorf("HTML rendering error, did you install lynx? : %v", err)
+		return nil, fmt.Errorf("HTML rendering error: %v", err)
 	}
 
-	return createCodeFile(problem, lang, data)
+	return data, nil
 }
 
 func createCodeFile(problem, lang string, cnt *DownloadProblemResponse) error {
 
 	questionID := cnt.Data.Question.QuestionID
 
-	fileName := problem + "_" + questionID + "." + lang
+	ext := lang
+
+	if l, ok := languageExtension[lang]; ok {
+		ext = l
+	}
+
+	fileName := problem + "_" + questionID + "." + ext
 
 	Editorfile, err := os.Create(fileName)
 

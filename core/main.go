@@ -23,6 +23,23 @@ const (
 	GRAPHQL_URL = "https://leetcode.com/graphql"
 )
 
+var (
+	languageExtension = map[string]string{
+		"rust":       "rs",
+		"bash":       "sh",
+		"csharp":     "cs",
+		"javascript": "js",
+		"typescript": "ts",
+		"python":     "py",
+		"elixer":     "ex",
+		"ruby":       "rb",
+		"python3":    "py",
+		"kotlin":     "kt",
+		"racket":     "rkt",
+		"erlang":     "erl",
+	}
+)
+
 func ProblemOfTheDay() {
 	spinnerInfo, _ := pterm.DefaultSpinner.Start("Fetching question of the day...")
 	data, err := GetProblemOfTheDay()
@@ -40,8 +57,7 @@ func ProblemOfTheDay() {
 	reply := utils.UserInput("Download problem? [y,n]: ")
 
 	if reply == "y" {
-		lang := utils.UserInput("Language? [cpp,java,python,etc.]: ")
-		DownloadProblem(title, lang)
+		DownloadProblem(title)
 	}
 
 }
@@ -109,14 +125,12 @@ func SearchProblem(searchKey string, count int) {
 	problem := selectedOptions[:strings.Index(selectedOptions, "[")]
 	problem = strings.Trim(problem, "\t \n")
 
-	lang := utils.UserInput("Select a language: ")
-
-	DownloadProblem(problem, lang)
+	DownloadProblem(problem)
 }
 
-func DownloadProblem(problem, lang string) {
+func DownloadProblem(problem string) {
 	spinnerInfo, _ := pterm.DefaultSpinner.Start("Downloading")
-	err := _downloadProblem(problem, lang)
+	data, err := downloadProblem(problem)
 	if err != nil {
 		spinnerInfo.Fail(err)
 		os.Exit(1)
@@ -129,6 +143,30 @@ func DownloadProblem(problem, lang string) {
 		},
 	}
 	spinnerInfo.Info("")
+
+	var languages []string
+
+	for _, item := range data.Data.Question.CodeSnippets {
+		languages = append(languages, fmt.Sprintf("%s", item.LangSlug))
+	}
+
+	p := pterm.DefaultInteractiveSelect
+	p = *p.WithDefaultText("Select the language")
+	selectedLang, _ := p.WithOptions(languages).Show()
+	lang := strings.Trim(selectedLang, "\t \n")
+
+	problem = utils.GetTitleSlug(problem)
+
+	if err := createCodeFile(problem, lang, data); err != nil {
+		spinnerInfo.InfoPrinter = &pterm.PrefixPrinter{
+			MessageStyle: &pterm.Style{pterm.FgGreen},
+			Prefix: pterm.Prefix{
+				Style: &pterm.Style{pterm.FgBlack, pterm.BgGreen},
+				Text:  " ERROR ",
+			},
+		}
+		spinnerInfo.Info(err)
+	}
 }
 
 func GetTopics(topic string) {
@@ -165,9 +203,7 @@ func GetTopics(topic string) {
 	problem := selectedOptions[:strings.Index(selectedOptions, "[")]
 	problem = strings.Trim(problem, "\t \n")
 
-	lang := utils.UserInput("Select a language: ")
-
-	DownloadProblem(problem, lang)
+	DownloadProblem(problem)
 }
 
 func RunCode(fileName string) {
@@ -238,8 +274,6 @@ func SuggestQuestions(problem string) {
 	newProblem := selectedOptions[:strings.Index(selectedOptions, "[")]
 	newProblem = strings.Trim(newProblem, "\n\t ")
 
-	lang := utils.UserInput("Select a language: ")
-
-	DownloadProblem(newProblem, lang)
+	DownloadProblem(newProblem)
 
 }
