@@ -78,30 +78,7 @@ func getSessionKey() (*SessionKey, error) {
 	return &SessionKey{Csrftoken: csrftoken, LeetcodeSession: leetcode_session}, nil
 }
 
-func RenderHTML(html_content string) error {
-	/*
-		cmd := exec.Command("lynx", "-stdin", "-dump")
-		cmd.Stdin = strings.NewReader(html_content)
-
-		file, err := os.Create("problem.txt")
-
-		if err != nil {
-			return err
-		}
-
-		defer file.Close()
-
-		cmd.Stderr = os.Stdout
-		cmd.Stdout = file
-
-		err = cmd.Run()
-
-		if err != nil {
-			return err
-		}
-
-	    return nil */
-
+func RenderHTML(problemName, problemID, html_content string) error {
 	doc, err := html.Parse(strings.NewReader(html_content))
 
 	if err != nil {
@@ -125,7 +102,8 @@ func RenderHTML(html_content string) error {
 
 	traverse(doc)
 
-	file, err := os.Create("problem.txt")
+	fileName := problemName + "_" + problemID + ".txt"
+	file, err := os.Create(fileName)
 
 	if err != nil {
 		return err

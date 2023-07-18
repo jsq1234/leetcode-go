@@ -73,8 +73,9 @@ func _downloadProblem(problem, lang string) error {
 	}
 
 	problemHTML := data.Data.Question.Content
+	id := data.Data.Question.QuestionID
 
-	if err := utils.RenderHTML(problemHTML); err != nil {
+	if err := utils.RenderHTML(problem, id, problemHTML); err != nil {
 		return fmt.Errorf("HTML rendering error, did you install lynx? : %v", err)
 	}
 
