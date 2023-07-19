@@ -11,9 +11,13 @@ import (
 	"os"
 )
 
-func getSubmissionId(fileName string, submit bool) (*RunTestCaseResponse, error) {
+func getSubmissionId(fileName string, testFile string, submit bool) (*RunTestCaseResponse, error) {
 
 	questionID, problemName, lang, err := utils.ParseFileName(fileName)
+
+	if val, ok := reverseMapping[lang]; ok {
+		lang = val
+	}
 
 	if err != nil {
 		return nil, err
@@ -33,7 +37,13 @@ func getSubmissionId(fileName string, submit bool) (*RunTestCaseResponse, error)
 		return nil, err
 	}
 
-	testCases, err := utils.ParseTestCases(fileContentStr)
+	var testCases string
+
+	if testFile == "" {
+		testCases, err = utils.ParseTestCases(fileContentStr)
+	} else {
+		testCases, err = utils.ParseTestCaseFile(testFile)
+	}
 
 	if err != nil {
 		return nil, err
@@ -77,6 +87,7 @@ func getSubmissionId(fileName string, submit bool) (*RunTestCaseResponse, error)
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, err
 	}
+
 	return &response, nil
 }
 
@@ -107,9 +118,9 @@ func execute(id string) (*SubmissionResponse, error) {
 	return submissionResult, nil
 }
 
-func runTestCases(fileName string, submit bool) (bool, error) {
+func runTestCases(fileName string, testFile string, submit bool) (bool, error) {
 
-	testCaseResponse, err := getSubmissionId(fileName, submit)
+	testCaseResponse, err := getSubmissionId(fileName, testFile, submit)
 
 	if err != nil {
 		return false, err
@@ -245,8 +256,8 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 
 	return passed
 }
-func submitCode(fileName string) (bool, error) {
-	res, err := runTestCases(fileName, true)
+func submitCode(fileName string, testFile string) (bool, error) {
+	res, err := runTestCases(fileName, testFile, true)
 	if err != nil {
 		return false, err
 	}

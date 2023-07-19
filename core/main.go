@@ -28,6 +28,7 @@ var (
 		"rust":       "rs",
 		"bash":       "sh",
 		"csharp":     "cs",
+		"golang":     "go",
 		"javascript": "js",
 		"typescript": "ts",
 		"python":     "py",
@@ -37,6 +38,20 @@ var (
 		"kotlin":     "kt",
 		"racket":     "rkt",
 		"erlang":     "erl",
+	}
+	reverseMapping = map[string]string{
+		"rs":  "rust",
+		"sh":  "bash",
+		"cs":  "csharp",
+		"js":  "javascript",
+		"ts":  "typescript",
+		"py":  "python3",
+		"go":  "golang",
+		"ex":  "elixer",
+		"rb":  "ruby",
+		"kt":  "kotlin",
+		"rkt": "racket",
+		"erl": "erlang",
 	}
 )
 
@@ -206,7 +221,7 @@ func GetTopics(topic string) {
 
 func RunCode(fileName string) {
 	spinnerInfo, _ := pterm.DefaultSpinner.Start("Executing...")
-	_, err := runTestCases(fileName, false)
+	_, err := runTestCases(fileName, "", false)
 	if err != nil {
 		spinnerInfo.Fail(err)
 		os.Exit(1)
@@ -216,7 +231,7 @@ func RunCode(fileName string) {
 
 func SubmitCode(fileName string) {
 	spinnerInfo, _ := pterm.DefaultSpinner.Start("Submitting...")
-	res, err := submitCode(fileName)
+	res, err := submitCode(fileName, "")
 	if err != nil {
 		spinnerInfo.Fail(err)
 		os.Exit(1)

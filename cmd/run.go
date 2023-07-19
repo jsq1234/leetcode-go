@@ -20,6 +20,8 @@ var runCmd = &cobra.Command{
 	},
 }
 
+var fileName string
+
 func init() {
 	rootCmd.AddCommand(runCmd)
 
@@ -31,5 +33,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// runCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	runCmd.Flags().StringVarP(&fileName, "file", "f", "", "Path of testcase file")
 }

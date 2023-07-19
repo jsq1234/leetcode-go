@@ -185,7 +185,6 @@ func ParseTestCases(content string) (string, error) {
 	}
 
 	testCases = strings.TrimRight(testCases, "\n\t ")
-
 	return testCases, nil
 }
 
@@ -207,4 +206,24 @@ func UserInput(prompt string) string {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	return scanner.Text()
+}
+
+func ParseTestCaseFile(fileName string) (string, error) {
+
+	file, err := os.Open(fileName)
+
+	if err != nil {
+		return "", nil
+	}
+
+	byte, err := io.ReadAll(file)
+
+	if err != nil {
+		return "", nil
+	}
+
+	testCases := string(byte)
+	testCases = strings.TrimSpace(testCases)
+
+	return testCases, nil
 }
