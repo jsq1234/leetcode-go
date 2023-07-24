@@ -129,6 +129,8 @@ type SubmissionResponse struct {
 	RunSuccess             bool        `json:"run_success"`
 	CompileError           string      `json:"compile_error"`
 	FullCompileError       string      `json:"full_compile_error"`
+	RuntimeError           string      `json:"runtime_error"`
+	FullRuntimeError       string      `json:"full_runtime_error"`
 	StatusRuntime          string      `json:"status_runtime"`
 	Memory                 int         `json:"memory"`
 	CodeAnswer             []string    `json:"code_answer"`

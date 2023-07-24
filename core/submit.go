@@ -145,7 +145,6 @@ func runTestCases(fileName string, testFile string, submit bool) (bool, error) {
 			break
 		}
 	}
-
 	res := OutputResult(testCaseResponse, Result)
 	return res, nil
 }
@@ -252,6 +251,17 @@ func OutputResult(testCaseResponse *RunTestCaseResponse, Result *SubmissionRespo
 			fmt.Println(Result.CodeOutput.(string))
 
 		}
+	case "Runtime Error":
+
+		pterm.Info.WithPrefix(pterm.Prefix{
+			Style: &pterm.Style{pterm.FgBlack, pterm.BgRed, pterm.Bold},
+			Text:  " RUNTIME ERROR ",
+		}).Println()
+
+		color.Redln(Result.FullRuntimeError)
+
+		passed = false
+
 	}
 
 	return passed
